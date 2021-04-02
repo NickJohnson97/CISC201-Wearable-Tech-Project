@@ -18,10 +18,10 @@ volatile boolean firstBeat = true;
 volatile boolean secondBeat = false; 
 
 void interruptSetup() {
-  TCCR1A = 0x00;
-  TCCR1B = 0x0C;
-  OCR1A = 0x7C;
-  TIMSK1 = 0x02;
+  TCCR2A = 0x02;
+  TCCR2B = 0x06;
+  OCR2A = 0x7C;
+  TIMSK2 = 0x02;
   sei();
 }
 
