@@ -1,20 +1,6 @@
 /*
-   Code to detect pulses from the PulseSensor,
-   using an interrupt service routine.
-
-   Here is a link to the tutorial\
-   https://pulsesensor.com/pages/getting-advanced
-
-   Copyright World Famous Electronics LLC - see LICENSE
-   Contributors:
-     Joel Murphy, https://pulsesensor.com
-     Yury Gitman, https://pulsesensor.com
-     Bradford Needham, @bneedhamia, https://bluepapertech.com
-
-   Licensed under the MIT License, a copy of which
-   should have been included with this software.
-
-   This software is not intended for medical use.
+  Based on PulseSensor code from World Famous Electronics LLC, by Joel Murphy, Yury Gitman, Bradford Needham. Licensed under the MIT License, a copy of which
+   should have been included with this software. This software is not intended for medical use.
 */
 
 /*
@@ -55,6 +41,17 @@ const int PULSE_INPUT = A0;
 const int PULSE_BLINK = 13;    // Pin 13 is the on-board LED
 const int PULSE_FADE = 5;
 const int THRESHOLD = 550;   // Adjust this number to avoid noise when idle
+
+/*
+   Stores average heart rate and variability in bytes (since it's < 255 and saves storage) 
+   Byte arrays stores samples taken over a day, every 15 minutes
+*/
+volatile byte avgHR = 100;
+volatile byte avgHRV = 100;
+
+volatile byte[96] avgHR = 0;
+volatile byte[96] avgHRV = 0;
+
 
 /*
    All the PulseSensor Playground functions.
@@ -121,4 +118,29 @@ void loop() {
   if (pulseSensor.sawStartOfBeat()) {
    pulseSensor.outputBeat();
   }
+   
+   //WARNINGS
+   
+   // if current IBI is unhealthy: warning
+   
+   // if current IBI is unhealthy and heart rate is elevated slightly: danger
+   
+   // if current HR increases by more than 40 beats per second: panic attack
+   if (pulseSensor.getBeatsPerMinute() > (avgHR + 40)){
+      pass 
+      //light turns red
+         //call panic function
+   }
+   
 }
+
+//StoreHR: Calculates avg heart rate (over day)
+
+//StoreIBI: Calculates avg variability (over day)
+
+//Warning
+
+//Danger
+
+//Panic
+
